@@ -25,9 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#161618]`}
       >
         {children}
+        <p className="text-[#8A8F98] text-center text-sm pb-5">
+          Copy @2025 - <span className="font-bold">Myer</span>
+        </p>
       </body>
     </html>
   );
