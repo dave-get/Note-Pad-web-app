@@ -1,10 +1,10 @@
 import Link from "next/link";
+import LandingPage from "./landingPage/page";
 
 export default function Home() {
   return (
-    <div>
-      <p>Hello world</p>
-      <Link href="/landingPage">Get Start</Link>
+    <div className="">
+      <LandingPage />
     </div>
   );
 }
