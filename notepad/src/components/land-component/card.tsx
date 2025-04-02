@@ -10,7 +10,7 @@ const Card = ({ data }: { data: any }) => {
           <p className="text-[#F7F8F8] text-left">{data.description}</p>
           <div className="flex items-center space-x-2">
             <Image src={data.purpose[0].icon} alt="" width={15} height={15} />
-            <p className="text-white">{data.purpose[0].text}</p>
+            <p className="text-white font-irish-grover">{data.purpose[0].text}</p>
           </div>
         </div>
       </div>
