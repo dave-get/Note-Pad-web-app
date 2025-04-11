@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Irish_Grover } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${irishGrover.variable} antialiased bg-[#161618]`}
       >
+        <Toaster />
         {children}
         <p className="text-[#8A8F98] text-center text-sm pb-5">
           Copy @2025 - <span className="font-bold">Myer</span>

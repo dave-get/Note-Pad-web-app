@@ -1,6 +1,6 @@
 import Background from "@/components/background";
 import Signup from "@/components/form/authform/signup";
-import Headers from "@/components/header/headers";
+import Headers from "@/components/header-component/headers";
 import React from "react";
 
 const SignUp = () => {

@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import React, { use } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,6 +11,7 @@ const schema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
 const Login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -20,6 +22,7 @@ const Login = () => {
   const onsubmit = (data: any) => {
     console.log(data);
     // Perform login action here
+    router.push("/homePage");
   };
   return (
     <div className="flex flex-col justify-center items-center w-[35%] border border-white space-y-10 mt-10 px-10 py-20 rounded-2xl">

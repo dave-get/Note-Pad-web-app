@@ -1,4 +1,4 @@
-import Headers from "@/components/header/headers";
+import Headers from "@/components/header-component/headers";
 import LandingComp from "@/components/land-component/landingComp";
 import React from "react";
 

@@ -1,6 +1,6 @@
 import Background from "@/components/background";
 import Login from "@/components/form/authform/login";
-import Headers from "@/components/header/headers";
+import Headers from "@/components/header-component/headers";
 import React from "react";
 
 const LogIn = () => {
