@@ -13,17 +13,16 @@ var privateKey = fs.readFileSync("private.key");
 const auth = Router();
 
 auth.post("/login", loginValidation, async (req: Request, res: Response) => {
-  const { username, password } = req.body;
-
+  const { email, password } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.status(400).json({ errors: errors.array() });
     return;
   }
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({ email });
   if (!user) {
-    res.status(401).json({ success: false, message: "Invalid username" });
+    res.status(401).json({ success: false, message: "Invalid email" });
     return;
   } else {
     let cmp = await user.comparePassword(password);
@@ -31,9 +30,13 @@ auth.post("/login", loginValidation, async (req: Request, res: Response) => {
       res.status(401).json({ success: false, message: "Invalid password" });
       return;
     } else {
-      const token = jwt.sign({ id: user._id, username, role: "user" }, privateKey, {
-        algorithm: "RS256",
-      });
+      const token = jwt.sign(
+        { id: user._id, email, username:user.username, role: "user" },
+        privateKey,
+        {
+          algorithm: "RS256",
+        }
+      );
       res.json({ success: true, message: "Login Success", authToken: token });
     }
   }
@@ -53,9 +56,13 @@ auth.post(
 
     const newUser = new User({ username, email, password });
     await newUser.save();
-    const token = jwt.sign({ id: newUser._id, username, role: "user" }, privateKey, {
-      algorithm: "RS256",
-    });
+    const token = jwt.sign(
+      { id: newUser._id, username, role: "user" },
+      privateKey,
+      {
+        algorithm: "RS256",
+      }
+    );
     res.json({ message: "User created", authToken: token });
   }
 );

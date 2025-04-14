@@ -1,10 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import React, { use } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { GithubLoginButton } from "./github-signin";
+import { LoginForm } from "@/type";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { login } from "@/lib/actions/server-functions";
 
 const schema = z.object({
   email: z.string().email("Invalid email address"),
@@ -19,11 +23,21 @@ const Login = () => {
   } = useForm({
     resolver: zodResolver(schema),
   });
-  const onsubmit = (data: any) => {
-    console.log(data);
-    // Perform login action here
-    router.push("/homePage");
+
+  const onSubmit = async (data: LoginForm) => {
+    const res = await login(data);
+
+    console.log("res************", res);
+
+    if (res?.ok) {
+      toast.success("Sign in successfully");
+      router.push("/homePage");
+    }
+    if (!res?.ok) {
+      toast.error("Invalid Email or Password");
+    }
   };
+
   return (
     <div className="flex flex-col justify-center items-center w-[35%] border border-white space-y-10 mt-10 px-10 py-20 rounded-2xl">
       <div className="flex flex-col space-y-5 items-center px-10">
@@ -34,8 +48,9 @@ const Login = () => {
         </p>
       </div>
       <form
-        onSubmit={handleSubmit(onsubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-5 w-full"
+        suppressHydrationWarning
       >
         <div>
           <input
@@ -56,7 +71,9 @@ const Login = () => {
             {...register("password")}
           />
           {errors.password && (
-            <span className="text-red-500 text-sm">{errors.password.message}</span>
+            <span className="text-red-500 text-sm">
+              {errors.password.message}
+            </span>
           )}
         </div>
         <button
@@ -67,14 +84,13 @@ const Login = () => {
         </button>
       </form>
       <div className="flex justify-between w-full">
-        <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
-          <Image src="/icons/google.svg" alt="" width={20} height={20} />
-          <p className="text-white text-sm font-bol">Sign up with Google</p>
-        </div>
-        <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
-          <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
-          <p className="text-white text-sm font-bol">Sign up with Facebook</p>
-        </div>
+        <form action="">
+          <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
+            <Image src="/icons/google.svg" alt="" width={20} height={20} />
+            <p className="text-white text-sm font-bol">Sign up with Google</p>
+          </div>
+        </form>
+        <GithubLoginButton />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useSession } from "next-auth/react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import ReachTextEditor from "./reach-text-editor";
+import { handleNote } from "@/lib/actions/server-functions";
 
 const formSchema = z.object({
   title: z
@@ -33,6 +35,7 @@ const formSchema = z.object({
 });
 
 export default function TextEditorForm() {
+  const { data: session } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,12 +44,27 @@ export default function TextEditorForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast.success(
-      <div className="bg-green-500/80 text-white p-4 rounded-lg">
-        <p>Document titled {values.title} created successfully!</p>
-      </div>
-    );
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (!session?.user?.token) {
+      toast.error("You must be logged in to create a note");
+      return;
+    }
+
+    const res = await handleNote(values,session?.user?.token);
+
+    if (res.ok) {
+      toast.success(
+        <div className="bg-green-500/80 text-white p-4 rounded-lg">
+          <p>Document titled {values.title} created successfully!</p>
+        </div>
+      );
+    } else {
+      toast.error(
+        <div className="bg-red-500/80 text-white p-4 rounded-lg">
+          <p>Failed to save document titled {values.title}</p>
+        </div>
+      );
+    }
   }
 
   return (
@@ -56,7 +74,7 @@ export default function TextEditorForm() {
       </h1>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" suppressHydrationWarning>
           <FormField
             control={form.control}
             name="title"

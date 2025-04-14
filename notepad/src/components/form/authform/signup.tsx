@@ -1,15 +1,22 @@
-'use client';
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Github } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { GithubLoginButton } from "./github-signin";
+import { signup } from "@/lib/actions/server-functions";
+import { signupForm } from "@/type";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   username: z.string().min(3, "Username is required"),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
 });
+
 const Signup = () => {
   const {
     register,
@@ -19,9 +26,23 @@ const Signup = () => {
     resolver: zodResolver(schema),
   });
 
-  const onsubmit = (data: any) => {
-    console.log(data);
-    // Perform signup action here
+  const router = useRouter();
+
+  const onSubmit = async (data: signupForm) => {
+    try {
+      const res = await signup(data);
+      const responseData = await res.json();
+      
+      if (res.ok) {
+        toast.success("Signup successful");
+        router.push("/api/auth/login"); 
+      } else {
+        toast.error(responseData.message || "Signup failed");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast.error("An error occurred during signup");
+    }
   };
   return (
     <div className="flex flex-col justify-center items-center w-[35%] border border-white space-y-10 mt-10 px-10 py-20 rounded-2xl">
@@ -34,7 +55,7 @@ const Signup = () => {
         </p>
       </div>
       <form
-        onSubmit={handleSubmit(onsubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-5 w-full"
       >
         <div>
@@ -82,14 +103,13 @@ const Signup = () => {
         </button>
       </form>
       <div className="flex justify-between w-full">
-        <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
-          <Image src="/icons/google.svg" alt="" width={20} height={20} />
-          <p className="text-white text-sm font-bol">Sign up with Google</p>
-        </div>
-        <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
-          <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
-          <p className="text-white text-sm font-bol">Sign up with Facebook</p>
-        </div>
+        <form action="">
+          <div className="flex items-center space-x-2 cursor-pointer border p-2 border-white/30 rounded">
+            <Image src="/icons/google.svg" alt="" width={20} height={20} />
+            <p className="text-white text-sm font-bol">Sign up with Google</p>
+          </div>
+        </form>
+        <GithubLoginButton />
       </div>
     </div>
   );

@@ -18,10 +18,15 @@ import { User } from "../models/user.model.js";
 const notes = Router();
 notes.use(jwtAuth);
 
-notes.get("/", async (req: Request, res: Response) => {
+notes.get("/", async (req: AuthenticatedRequest, res: Response) => {
   try {
-    // Connect to MongoDB if not already connected
-    const data = Note.find({});
+    const userId = req.id;
+    if (!userId) {
+      res.status(401).json({ success: false, message: "User not authenticated" });
+      return;
+    }
+
+    const data = Note.find({ user: userId });
     const documents = await data.exec();
 
     res.json({

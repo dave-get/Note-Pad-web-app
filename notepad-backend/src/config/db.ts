@@ -9,11 +9,11 @@ const host = process.env.MONGO_HOST;
 const port = process.env.MONGO_PORT;
 const database = process.env.MONGO_DB;
 
-if (!username || !password || !host || !port || !database) {
+if (!host || !port || !database) {
   throw new Error("❌ Missing required environment variables for MongoDB.");
 }
 
-const uri = `mongodb://${username}:${password}@${host}:${port}/${database}?authSource=admin`;
+const uri = `mongodb://${host}:${port}/${database}?authSource=admin`;
 
 async function connectDB() {
   try {

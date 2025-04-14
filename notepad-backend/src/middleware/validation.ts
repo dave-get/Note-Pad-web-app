@@ -23,7 +23,7 @@ export const registerValidation = [
   body("password").isLength({ min: 6 }),
 ];
 export const loginValidation = [
-  body("username").notEmpty(),
+  body("email").notEmpty(),
   body("password").isLength({ min: 6 }),
 ];
 
