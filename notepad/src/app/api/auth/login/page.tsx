@@ -1,7 +1,7 @@
 import Background from "@/components/background";
 import Login from "@/components/form/authform/login";
 import Headers from "@/components/header-component/headers";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 import React from "react";
 
 const LogIn = async () => {

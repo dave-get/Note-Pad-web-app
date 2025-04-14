@@ -5,7 +5,7 @@ import React, { use } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { GithubLoginButton } from "./github-signin";
-import { LoginForm } from "@/type";
+import { LoginForm } from "@/type/index";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { login } from "@/lib/actions/server-functions";
