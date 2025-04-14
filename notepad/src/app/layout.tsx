@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Irish_Grover } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
+import NextTopLoader from "nextjs-toploader";
+import SessionWrapper from "@/sessionwrap/session-wrap";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +36,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${irishGrover.variable} antialiased bg-[#161618]`}
       >
-        {children}
+        <Toaster />
+        <NextTopLoader />
+        <SessionWrapper>{children}</SessionWrapper>
         <p className="text-[#8A8F98] text-center text-sm pb-5">
           Copy @2025 - <span className="font-bold">Myer</span>
         </p>

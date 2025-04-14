@@ -28,7 +28,7 @@ const Dropdown = () => {
           )}
         </div>
       </div>
-      {isOpen && isOpen === true && (
+      {isOpen && (
         <div className="absolute top-8 w-full space-y-2">
           <p className="border border-white/10 px-3">AI</p>
           <p className="border border-white/10 px-3">Chat</p>
