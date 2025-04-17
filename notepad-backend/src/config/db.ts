@@ -25,6 +25,6 @@ async function connectDB() {
   }
 }
 
-connectDB(); // Ensure DB connects before handling requests
+connectDB(); 
 
 export { mongoose };

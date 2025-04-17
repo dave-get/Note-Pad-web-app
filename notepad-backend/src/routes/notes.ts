@@ -1,10 +1,4 @@
 import { Request, Response, Router } from "express";
-
-// Extend the Request interface to include the 'id' property
-interface AuthenticatedRequest extends Request {
-  id?: string;
-  user?: string;
-}
 import { ObjectId } from "mongodb";
 import { jwtAuth } from "../middleware/jwtAuth.js";
 import { Note } from "../models/note.model.js";
@@ -15,13 +9,19 @@ import {
 } from "../middleware/validation.js";
 import { User } from "../models/user.model.js";
 
+interface AuthenticatedRequest extends Request {
+  id?: string;
+  user?: string;
+}
+
 const notes = Router();
 notes.use(jwtAuth);
 
-notes.get("/", async (req: Request, res: Response) => {
+notes.get("/", async (req: AuthenticatedRequest, res: Response) => {
   try {
-    // Connect to MongoDB if not already connected
-    const data = Note.find({});
+    const userId = req.id;
+
+    const data = Note.find({user: userId});
     const documents = await data.exec();
 
     res.json({
@@ -39,18 +39,16 @@ notes.get("/", async (req: Request, res: Response) => {
 });
 notes.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
   try {
-    console.log("Updating note for user:", req.params.id);
     const { id } = req.params;
-    const objectId = new ObjectId(id); // Convert the string ID to ObjectId
+    const objectId = new ObjectId(id); 
 
-    // Perform the update correctly
     const data = await Note.findOne({ _id: objectId });
 
     if (!data) {
       res.status(404).json({ message: "Item not found" });
       return;
     }
-    res.json(data); // Send JSON response
+    res.json(data);
   } catch (error) {
     console.error("Error finding note:", error);
     res.status(500).json({ message: "Server error" });
@@ -117,16 +115,14 @@ notes.delete(
     try {
       console.log("Deleting note for user:", req.params.id);
       const { id } = req.params;
-      const objectId = new ObjectId(id); // Convert the string ID to ObjectId
-
-      // Perform the update correctly
+      const objectId = new ObjectId(id); 
       const data = await Note.deleteOne({ _id: objectId });
 
       if (!data) {
         res.status(404).json({ message: "Item not found" });
         return;
       }
-      res.json(data); // Send JSON response
+      res.json(data);
     } catch (error) {
       console.error("Error Deleting note:", error);
       res.status(500).json({ message: "Server error" });
