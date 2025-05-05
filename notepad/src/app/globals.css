@@ -122,41 +122,39 @@
   }
 }
 
-/* Add to your globals.css */
-.ProseMirror {
-  h1 {
-    @apply text-3xl font-bold my-4;
-  }
+@layer components {
+  .ProseMirror {
+    h1 {
+      @apply text-3xl font-bold my-4;
+    }
 
-  h2 {
-    @apply text-2xl font-bold my-3;
-  }
+    h2 {
+      @apply text-2xl font-bold my-3;
+    }
 
-  h3 {
-    @apply text-xl font-bold my-2;
-  }
+    h3 {
+      @apply text-xl font-bold my-2;
+    }
 
-  p {
-    @apply my-2;
-  }
-}
+    p {
+      @apply my-2;
+    }
 
-/* Add to your globals.css */
-.ProseMirror {
-  ul,
-  ol {
-    @apply pl-5 my-2;
-  }
+    ul,
+    ol {
+      @apply pl-5 my-2;
+    }
 
-  ul {
-    @apply list-disc;
-  }
+    ul {
+      @apply list-disc;
+    }
 
-  ol {
-    @apply list-decimal;
-  }
+    ol {
+      @apply list-decimal;
+    }
 
-  li {
-    @apply my-1;
+    li {
+      @apply my-1;
+    }
   }
 }

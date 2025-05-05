@@ -17,8 +17,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import ReachTextEditor from "./reach-text-editor";
-import { handleCreateNote } from "@/lib/actions/server-functions";
+import { handleUpdateNote } from "@/lib/actions/server-functions";
+import ReachTextEditor from "../new-note-component/reach-text-editor";
+import { SingleNote } from "@/type/index";
 
 const formSchema = z.object({
   title: z
@@ -34,13 +35,13 @@ const formSchema = z.object({
   }),
 });
 
-export default function TextEditorForm() {
+export const EditNote = ({ note }: { note: SingleNote }) => {
   const { data: session } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      content: "",
+      title: note.title || "",
+      content: note.content,
     },
   });
 
@@ -50,7 +51,7 @@ export default function TextEditorForm() {
       return;
     }
 
-    const res = await handleCreateNote(values, session?.user?.token);
+    const res = await handleUpdateNote(values, note._id, session?.user?.token);
 
     if (res.ok) {
       toast.success(
@@ -66,11 +67,11 @@ export default function TextEditorForm() {
       );
     }
   };
-
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6 text-white">
-        Create New Document
+        Edit Your <span className="italic font-thin">"{note.title}"</span>{" "}
+        Document
       </h1>
 
       <Form {...form}>
@@ -84,7 +85,15 @@ export default function TextEditorForm() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white text-2xl">Title</FormLabel>
+                <div className="flex justify-between items-center">
+                  <FormLabel className="text-white text-2xl">Title</FormLabel>
+                  <Button
+                    type="submit"
+                    className="sm:w-auto bg-blue-400/20 hover:bg-blue-600/50"
+                  >
+                    Save Change
+                  </Button>
+                </div>
                 <FormControl className="text-white">
                   <Input placeholder="Enter document title" {...field} />
                 </FormControl>
@@ -100,7 +109,10 @@ export default function TextEditorForm() {
               <FormItem>
                 <FormLabel className="text-white text-2xl">Content</FormLabel>
                 <FormControl>
-                  <ReachTextEditor onChange={field.onChange} />
+                  <ReachTextEditor
+                    onChange={field.onChange}
+                    initialContent={note.content}
+                  />
                 </FormControl>
                 <FormDescription>
                   Write the main content of your document.
@@ -109,15 +121,10 @@ export default function TextEditorForm() {
               </FormItem>
             )}
           />
-
-          <Button
-            type="submit"
-            className="w-full sm:w-auto bg-blue-400/20 hover:bg-blue-600/50"
-          >
-            Save
-          </Button>
         </form>
       </Form>
     </div>
   );
-}
+};
+
+export default EditNote;

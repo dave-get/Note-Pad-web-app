@@ -116,7 +116,7 @@ notes.post(
 
 // delete Note
 notes.delete(
-  "/:id",
+  "/delete/:id",
   deleteNoteValidation,
   async (req: Request<{ id: string }>, res: Response) => {
     try {
