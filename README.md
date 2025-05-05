@@ -1,4 +1,4 @@
-![api-auth-login](https://github.com/user-attachments/assets/f531bfe8-5f97-47af-a114-61aeadcf2f82)# notePad ✏️
+# notePad ✏️
 
 A minimalist, session-aware web application for taking and organizing personal notes. Built with Next.js and TypeScript for a type-safe, component-driven experience.
 
