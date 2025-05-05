@@ -9,11 +9,22 @@ export type signupForm = {
   username: string;
 };
 
-export type Note = {
+export interface Note {
+  _id: string;
   title: string;
   content: string;
-  createdAt: string;
+  user: string;
+  createdAt: string; 
   updatedAt: string;
+  __v: number;
+}
+
+export interface SingleNote {
+  _id: string;
+  title: string;
+  content: string;
+  user: string;
+  __v: number;
 }
 
 export type FetchResponse = {

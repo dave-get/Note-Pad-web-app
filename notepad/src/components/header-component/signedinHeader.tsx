@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -36,12 +36,10 @@ const SignedinHeader = ({ session }: { session: any }) => {
             <DropdownMenuTrigger asChild>
               <Avatar className="flex items-center justify-center border">
                 {session.user.image ? (
-
-                <AvatarImage src={session.user?.image} />):
-                (
-                  <User color="white"/>
-                )
-                }
+                  <AvatarImage src={session.user?.image} />
+                ) : (
+                  <User color="white" />
+                )}
               </Avatar>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56">
@@ -52,14 +50,13 @@ const SignedinHeader = ({ session }: { session: any }) => {
                   Profile
                   <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
                 </DropdownMenuItem>
-                
-                  <DropdownMenuItem onClick={handleSignOut}>
-                    Logout
-                    <DropdownMenuShortcut>
-                      <LogOut />
-                    </DropdownMenuShortcut>
-                  </DropdownMenuItem>
-                
+
+                <DropdownMenuItem onClick={handleSignOut}>
+                  Logout
+                  <DropdownMenuShortcut>
+                    <LogOut />
+                  </DropdownMenuShortcut>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>

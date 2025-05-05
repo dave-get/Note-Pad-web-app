@@ -31,10 +31,10 @@ const Signup = () => {
     try {
       const res = await signup(data);
       const responseData = await res.json();
-      
+
       if (res.ok) {
         toast.success("Signup successful");
-        router.push("/api/auth/login"); 
+        router.push("/api/auth/login");
       } else {
         toast.error(responseData.message || "Signup failed");
       }
